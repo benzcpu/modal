@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .modal-box {
+            z-index: 9999;
+            height: 100%;
+            width: 100%;
+            position: fixed;
+            background-color: #0000002b;
+            display: none;
+            overflow: auto;
+            top: 0px;
+        }
+
+        /*.modal-box.active {*/
+        /*    display: block;*/
+        /*}*/
+
+        .modal-content {
+            width: 300px;
+            max-height: 500px;
+            min-height: 500px;
+            background-color: #fff;
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, 0px);
+            margin-bottom: 10%;
+            overflow: auto;
+        }
+
+        .modal-content .header {
+            cursor: pointer;
+            padding: 10px;
+            display: flex;
+            flex-direction: row-reverse;
+        }
+
+        .modal-content .header:hover {
+            opacity: 0.8;
+        }
+
+        .modal-content .modal-detail {
+            padding: 10px;
+        }
+
+        .modal-footer {
+            display: flex;
+            position: absolute;
+            bottom: 0px;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            flex-direction: row-reverse;
+        }
+    </style>
+</head>
+<body>
+<button class="open-modal" data-modal="test">Open modal</button>
+
+
+<div class="modal-box" data-modal="test-open">
+    <div class="modal-content">
+        <div class="header">
+            <div class="close">X CLOSE</div>
+        </div>
+        <div class="modal-detail">
+            test2
+        </div>
+    </div>
+</div>
+
+<div class="modal-box" data-modal="test">
+    <div class="modal-content">
+        <div class="header">
+            <div class="close">X CLOSE</div>
+        </div>
+
+        <div class="modal-detail">
+            <div class="form-group">
+                <div>
+                    <label for="">name</label>
+                </div>
+                <div>
+                    <input type="text" value="">
+                </div>
+            </div>
+            <div class="form-group">
+                <div>
+                    <label for="">lastname</label>
+                </div>
+                <div>
+                    <input type="text" value="">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="open-modal" data-modal="test-open">ok</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+</body>
+
+
+<script>
+	$('.open-modal')
+		.on('click', function () {
+			var z_index="9999";
+			const data_modal = $(this)
+				.attr('data-modal');
+			const mymodal=$('.modal-box[data-modal=' + data_modal + ']')
+				$(mymodal).addClass('active');
+			var count_modal=$('.modal-box.active').length;
+			$(mymodal).css({"z-index":z_index+count_modal});
+			$(mymodal).attr({'data-lavel':count_modal});
+			$(mymodal).fadeIn();
+			//console.log($('.modal-box.active').length);
+		});
+	$('.close')
+		.on('click', function () {
+			const modal = $(this)
+				.parents('.modal-box');
+			Close_modal(modal)
+
+		});
+
+	$(document)
+		.on('click', function (event) {
+			const modal = event.target;
+			if ($(modal)
+				.hasClass('modal-box')) {
+				Close_modal(modal)
+			}
+		});
+	$(document)
+		.on('keydown', function (event) {
+			console.log(event.keyCode);
+			if (event.keyCode == 27) {
+				var last_lavel=$('.modal-box.active').length;
+				Close_modal('.modal-box.active[data-lavel='+last_lavel+']')
+
+			}
+		});
+
+	function Close_modal(modal){
+		$(modal).fadeOut();
+		// setTimeout(function(){
+			$(modal).removeClass('active')
+        // },1000)
+
+    }
+</script>
+
+</html>
